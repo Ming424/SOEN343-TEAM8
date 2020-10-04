@@ -1,4 +1,4 @@
-package application;
+package controller;
 
 import java.io.IOException;
 
@@ -9,9 +9,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class signUpController {
+public class ForgotPasswordController {
 	public void goToLoginPage(ActionEvent event) throws IOException {
-		Parent forgotPassword = FXMLLoader.load(getClass().getResource("login.fxml"));
+		Parent forgotPassword = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
 		Scene forgotPasswordScene = new Scene(forgotPassword);
 		
 		// stage info
