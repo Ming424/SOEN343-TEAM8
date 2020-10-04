@@ -2,11 +2,13 @@ package service;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.ColumnListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 public class DatabaseService
@@ -38,5 +40,15 @@ public class DatabaseService
     public static Map<String, Object> verifyLogin(final String username, final String password) throws SQLException
     {
         return query("SELECT firstname, lastname FROM users WHERE username = \"" + username + "\" AND password = \"" + password + "\"", new MapHandler());
+    }
+
+    public static List<String> verifyUniqueUsername(final String username) throws SQLException
+    {
+        return query("SELECT username FROM users WHERE username LIKE \"" + username + "\"", new ColumnListHandler<>());
+    }
+
+    public static List<String> createNewUser(final String username, final String password, final String firstname, final String lastname) throws SQLException
+    {
+        return insert("INSERT INTO users VALUES (\""+ username +"\", \""+ password +"\", \""+ firstname +"\", \""+ lastname +"\")", new ColumnListHandler<>());
     }
 }
