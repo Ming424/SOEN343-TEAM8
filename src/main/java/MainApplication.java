@@ -1,6 +1,7 @@
 import ch.vorburger.exec.ManagedProcessException;
 import ch.vorburger.mariadb4j.DB;
 import ch.vorburger.mariadb4j.DBConfigurationBuilder;
+import org.apache.commons.lang3.SystemUtils;
 import service.DatabaseService;
 import org.flywaydb.core.Flyway;
 
@@ -24,13 +25,21 @@ public class MainApplication
     private static void SetupDatabase() throws ManagedProcessException, SQLException
     {
         DBConfigurationBuilder config = DBConfigurationBuilder.newBuilder();
-        config.setPort(3306);
-        config.setDataDir("/mariaDB/backup");
+        config.setPort(0);
+        if (SystemUtils.IS_OS_WINDOWS)
+        {
+            config.setDataDir("/mariaDB/backup");
+        }
+        else
+        {
+            config.setDataDir("~/mariaDB/backup");
+        }
+
         DB db = DB.newEmbeddedDB(config.build());
         db.start();
         db.createDB("smartHome");
 
-        final String databaseUrl = db.getConfiguration().getURL("smartHome");
+        final String databaseUrl = db.getConfiguration().getURL("smartHome") + "?serverTimezone=UTC";
         DatabaseService.SetupDBController(databaseUrl);
 
         Flyway flyway = Flyway.configure().dataSource(databaseUrl, "root", "").load();

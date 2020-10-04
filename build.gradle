@@ -39,5 +39,6 @@ dependencies {
     implementation 'ch.vorburger.mariaDB4j:mariaDB4j-springboot:2.4.0'
     implementation 'mysql:mysql-connector-java:8.0.12'
     implementation 'commons-dbutils:commons-dbutils:1.6'
+    implementation 'org.apache.commons:commons-lang3:3.11'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.0.0'
 }
