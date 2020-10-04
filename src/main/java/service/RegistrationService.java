@@ -3,7 +3,6 @@ package service;
 import constants.RegistrationStatus;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class RegistrationService
 {
@@ -25,6 +24,32 @@ public class RegistrationService
             else
             {
                 return RegistrationStatus.NOT_UNIQUE_USERNAME;
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println("No users found for given combination");
+        }
+        return null;
+    }
+
+    public static RegistrationStatus updatePassword(final String username, final String password, final String passwordVerification)
+    {
+        try
+        {
+            if (!password.equals(passwordVerification))
+            {
+                return RegistrationStatus.PASSWORD_NOT_EQUAL;
+            }
+
+            if (DatabaseService.verifyUniqueUsername(username).size() == 1)
+            {
+                DatabaseService.updateUserPassword(username, password);
+                return RegistrationStatus.PASSWORD_UPDATED;
+            }
+            else
+            {
+                return RegistrationStatus.USERNAME_NOT_FOUND;
             }
         }
         catch (SQLException e)

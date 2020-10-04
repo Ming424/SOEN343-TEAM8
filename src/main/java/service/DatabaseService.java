@@ -51,4 +51,9 @@ public class DatabaseService
     {
         return insert("INSERT INTO users VALUES (\""+ username +"\", \""+ password +"\", \""+ firstname +"\", \""+ lastname +"\")", new ColumnListHandler<>());
     }
+
+    public static int updateUserPassword(final String username, final String password) throws SQLException
+    {
+        return update("UPDATE users SET password = \"" + password + "\" WHERE username LIKE \"" + username + "\"");
+    }
 }

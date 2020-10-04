@@ -14,8 +14,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import service.RegistrationService;
 
-public class SignUpController {
-
+public class SignUpController
+{
 	@FXML
 	private TextField username;
 	@FXML
