@@ -42,7 +42,7 @@ public class DatabaseService
         return query("SELECT firstname, lastname FROM users WHERE username = \"" + username + "\" AND password = \"" + password + "\"", new MapHandler());
     }
 
-    public static List<String> verifyUniqueUsername(final String username) throws SQLException
+    public static List<String> GetNumberOfUsername(final String username) throws SQLException
     {
         return query("SELECT username FROM users WHERE username LIKE \"" + username + "\"", new ColumnListHandler<>());
     }

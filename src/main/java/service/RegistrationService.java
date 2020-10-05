@@ -15,7 +15,7 @@ public class RegistrationService
                 return RegistrationStatus.PASSWORD_NOT_EQUAL;
             }
 
-            if (DatabaseService.verifyUniqueUsername(username).size() < 1)
+            if (DatabaseService.GetNumberOfUsername(username).size() < 1)
             {
                 // TODO add label for firstname and lastname here
                 DatabaseService.createNewUser(username, password, username, username);
@@ -42,7 +42,7 @@ public class RegistrationService
                 return RegistrationStatus.PASSWORD_NOT_EQUAL;
             }
 
-            if (DatabaseService.verifyUniqueUsername(username).size() == 1)
+            if (DatabaseService.GetNumberOfUsername(username).size() == 1)
             {
                 DatabaseService.updateUserPassword(username, password);
                 return RegistrationStatus.PASSWORD_UPDATED;
