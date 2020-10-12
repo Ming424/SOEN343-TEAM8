@@ -15,13 +15,11 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class DatabaseServiceTest
-{
+public class DatabaseServiceTest {
     static DB db;
 
     @BeforeAll
-    static void setup() throws ManagedProcessException, SQLException
-    {
+    static void setup() throws ManagedProcessException, SQLException {
         DBConfigurationBuilder config = DBConfigurationBuilder.newBuilder();
         config.setPort(0);
 
@@ -37,14 +35,12 @@ public class DatabaseServiceTest
     }
 
     @AfterAll
-    static void cleanup() throws ManagedProcessException
-    {
+    static void cleanup() throws ManagedProcessException {
         db.stop();
     }
 
     @Test
-    public void create_and_get_a_user() throws SQLException
-    {
+    public void create_and_get_a_user() throws SQLException {
         DatabaseService.createNewUser("testUser0", "testPassword", "testName", "testName");
         Map<String, Object> result = DatabaseService.verifyLogin("testUser0", "testPassword");
 
@@ -53,8 +49,7 @@ public class DatabaseServiceTest
     }
 
     @Test
-    public void verify_unique_username() throws SQLException
-    {
+    public void verify_unique_username() throws SQLException {
         DatabaseService.createNewUser("testUser1", "testPassword", "testName", "testName");
         List<String> result = DatabaseService.GetNumberOfUsername("testUser1");
         assertEquals(1, result.size());
@@ -65,8 +60,7 @@ public class DatabaseServiceTest
     }
 
     @Test
-    public void create_and_update_a_user_password() throws SQLException
-    {
+    public void create_and_update_a_user_password() throws SQLException {
         DatabaseService.createNewUser("testUser2", "testPassword", "testName", "testName");
         Map<String, Object> result = DatabaseService.verifyLogin("testUser2", "testPassword");
         assertEquals("testName", result.get("firstname"));
