@@ -1,7 +1,9 @@
 package service;
 
+import entity.UserRole;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ColumnListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 
@@ -48,8 +50,12 @@ public class DatabaseService {
         return update("UPDATE users SET password = \"" + password + "\" WHERE username LIKE \"" + username + "\"");
     }
 
+    public static List<UserRole> getAllUserRoles() throws SQLException {
+        return query("SELECT username, role FROM roles", new BeanListHandler<UserRole>(UserRole.class));
+    }
+
     public static List<String> createNewUserRole(final String username, final String role) throws SQLException {
-        return insert("INSERT INTO roles VALUES (\""+ username +"\", \""+ role +"\"", new ColumnListHandler<>());
+        return insert("INSERT INTO roles VALUES (\""+ username +"\", \""+ role +"\")", new ColumnListHandler<>());
     }
 
     public static int updateUserRole(final String username, final String role) throws SQLException {

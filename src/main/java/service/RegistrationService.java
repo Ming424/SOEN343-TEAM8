@@ -1,6 +1,7 @@
 package service;
 
 import constants.RegistrationStatus;
+import constants.UserRoles;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.SQLException;
@@ -18,6 +19,7 @@ public class RegistrationService {
 
             if (DatabaseService.GetNumberOfUsername(username).size() < 1) {
                 DatabaseService.createNewUser(username, password, firstname, lastname);
+                DatabaseService.createNewUserRole(username, UserRoles.STRANGER.toString());
                 return RegistrationStatus.USER_CREATED;
             }
             else {

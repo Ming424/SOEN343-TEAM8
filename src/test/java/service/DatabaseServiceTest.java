@@ -3,6 +3,7 @@ package service;
 import ch.vorburger.exec.ManagedProcessException;
 import ch.vorburger.mariadb4j.DB;
 import ch.vorburger.mariadb4j.DBConfigurationBuilder;
+import constants.UserRoles;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -71,5 +72,23 @@ public class DatabaseServiceTest {
         result = DatabaseService.verifyLogin("testUser2", "testPass");
         assertEquals("testName", result.get("firstname"));
         assertEquals("testName", result.get("lastname"));
+    }
+
+    @Test
+    public void create_and_update_user_role() throws SQLException {
+        DatabaseService.createNewUserRole("testUser3", UserRoles.STRANGER.toString());
+
+        DatabaseService.getAllUserRoles().forEach(r -> {
+            if (r.getUsername().equals("testUser3")) {
+                assertEquals(UserRoles.STRANGER.toString(), r.getRole().toString());
+            }
+        });
+
+        DatabaseService.updateUserRole("testUser3", UserRoles.GUEST.toString());
+        DatabaseService.getAllUserRoles().forEach(r -> {
+            if (r.getUsername().equals("testUser3")) {
+                assertEquals(UserRoles.GUEST.toString(), r.getRole().toString());
+            }
+        });
     }
 }
