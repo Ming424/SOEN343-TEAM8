@@ -11,14 +11,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import service.LoginService;
-
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.Objects;
 
+/**
+ * Controller responsible for the control and flow of the starting, StartUp, scene
+ */
 public class StartUpController {
 	/**
 	 * declaring variables
