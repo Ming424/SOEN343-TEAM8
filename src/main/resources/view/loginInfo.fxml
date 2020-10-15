@@ -46,11 +46,6 @@
                   <VBox alignment="CENTER" prefHeight="373.0" prefWidth="172.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <ImageView fitHeight="85.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="user" text="User Group" />
-                        <Button mnemonicParsing="false" onAction="#goToUserSettings" text="User Control">
-                           <VBox.margin>
-                              <Insets bottom="10.0" />
-                           </VBox.margin></Button>
                         <Label text="Location:" />
                         <Label text="_location" textAlignment="CENTER" textFill="#2b75ff">
                            <VBox.margin>
@@ -103,7 +98,11 @@
                                             <tabs>
                                               <Tab text="SHS">
                                                 <content>
-                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                         <children>
+                                                            <Button layoutX="21.0" layoutY="81.0" mnemonicParsing="false" onAction="#goToUserSettings" text="User Control" />
+                                                            <Label fx:id="user" layoutX="32.0" layoutY="56.0" text="User Group" />
+                                                         </children></AnchorPane>
                                                 </content>
                                               </Tab>
                                               <Tab text="SHC">
