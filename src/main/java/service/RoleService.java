@@ -36,8 +36,7 @@ public class RoleService {
     public static List<UserRole> getRoles() {
         try {
             return DatabaseService.getAllUserRoles();
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             System.out.println("There are no user roles");
         }
         return null;

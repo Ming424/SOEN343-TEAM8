@@ -3,11 +3,10 @@ package service;
 import constants.RegistrationStatus;
 import constants.UserRoles;
 import org.apache.commons.lang3.StringUtils;
-
 import java.sql.SQLException;
 
 /**
- * Service layer responsible for user profile creation and updating passwords
+ * Service layer responsible for user profile management
  */
 public class RegistrationService {
 
@@ -67,5 +66,20 @@ public class RegistrationService {
             System.out.println("No users found for given combination");
         }
         return null;
+    }
+
+    /**
+     * Users can delete a user, and potentially themselves
+     * Current session will maintain as long as they do not log out
+     *
+     * @param username Username related to Profile to delete
+     * @return true if the user has been deleted, false otherwise
+     */
+    public static void deleteUser(final String username) {
+        try {
+            DatabaseService.deleteUser(username);
+        } catch (SQLException e) {
+            System.out.println("Username does not exist");
+        }
     }
 }

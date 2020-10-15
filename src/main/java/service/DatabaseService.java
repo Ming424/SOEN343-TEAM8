@@ -6,7 +6,7 @@ import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ColumnListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
-
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -63,5 +63,10 @@ public class DatabaseService {
 
     public static int updateUserRole(final String username, final String role) throws SQLException {
         return update("UPDATE roles SET role = \"" + role + "\" WHERE username LIKE \"" + username + "\"");
+    }
+
+    public static Integer deleteUser(final String username) throws SQLException {
+        query("DELETE FROM users WHERE username LIKE \"" + username +"\"", new ScalarHandler<Integer>());
+        return query("DELETE FROM roles WHERE username LIKE \"" + username +"\"", new ScalarHandler<Integer>());
     }
 }
