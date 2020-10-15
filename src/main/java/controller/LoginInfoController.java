@@ -38,9 +38,6 @@ public class LoginInfoController {
 	public void setTime(String s) {
 		time.setText(s);
 	}
-	
-	
-
 
 	/**
 	 * This function loads the start up page(scene) into the window(stage)

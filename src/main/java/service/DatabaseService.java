@@ -33,7 +33,7 @@ public class DatabaseService {
         return queryRunner.insert(databaseConnection, command, handler);
     }
 
-    private static <T> T query(String command, ResultSetHandler<T> handler) throws SQLException {
+    protected static <T> T query(String command, ResultSetHandler<T> handler) throws SQLException {
         return queryRunner.query(databaseConnection, command, handler);
     }
 

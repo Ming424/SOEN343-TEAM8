@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Objects;
 
-public class startUpController {
+public class StartUpController {
 	/**
 	 * declaring variables
 	 */
