@@ -46,7 +46,7 @@ public class DatabaseService {
     }
 
     public static List<String> createNewUser(final String username, final String password, final String firstname, final String lastname) throws SQLException {
-        return insert("INSERT INTO users VALUES (\""+ username +"\", \""+ password +"\", \""+ firstname +"\", \""+ lastname +"\")", new ColumnListHandler<>());
+        return insert("INSERT INTO users VALUES (\"" + username + "\", \"" + password + "\", \"" + firstname + "\", \"" + lastname + "\")", new ColumnListHandler<>());
     }
 
     public static int updateUserPassword(final String username, final String password) throws SQLException {
@@ -58,7 +58,7 @@ public class DatabaseService {
     }
 
     public static List<String> createNewUserRole(final String username, final String role) throws SQLException {
-        return insert("INSERT INTO roles VALUES (\""+ username +"\", \""+ role +"\")", new ColumnListHandler<>());
+        return insert("INSERT INTO roles VALUES (\"" + username + "\", \"" + role + "\")", new ColumnListHandler<>());
     }
 
     public static int updateUserRole(final String username, final String role) throws SQLException {
@@ -66,7 +66,7 @@ public class DatabaseService {
     }
 
     public static Integer deleteUser(final String username) throws SQLException {
-        query("DELETE FROM users WHERE username LIKE \"" + username +"\"", new ScalarHandler<Integer>());
-        return query("DELETE FROM roles WHERE username LIKE \"" + username +"\"", new ScalarHandler<Integer>());
+        query("DELETE FROM users WHERE username LIKE \"" + username + "\"", new ScalarHandler<Integer>());
+        return query("DELETE FROM roles WHERE username LIKE \"" + username + "\"", new ScalarHandler<Integer>());
     }
 }

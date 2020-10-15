@@ -11,11 +11,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -52,6 +52,7 @@ public class UserRolesController {
 
     /**
      * Button function to go back to the Main Menu
+     *
      * @param event The event that triggered this method
      * @throws IOException Thrown if the method is unable to locate the view resource
      */
@@ -64,7 +65,7 @@ public class UserRolesController {
         LoginInfoController controller = loader.getController();
         controller.setUser(username);
 
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(loginScene);
         window.show();
     }
@@ -101,12 +102,11 @@ public class UserRolesController {
     /**
      * Creates a Label with the username
      *
-     * @param user The username placed in the label
+     * @param user  The username placed in the label
      * @param index The index value used for the label's ID
      * @return The label with the username and ID with the index
      */
-    private Node createUserLabel(final String user, final int index)
-    {
+    private Node createUserLabel(final String user, final int index) {
         Label userLabel = new Label();
         userLabel.setMinWidth(100);
         userLabel.setId("gridLabel" + index);
@@ -117,12 +117,11 @@ public class UserRolesController {
     /**
      * Creates the drop down box to select and change a user's role
      *
-     * @param role The role for the user, possible values defined in {@link UserRoles}.
+     * @param role  The role for the user, possible values defined in {@link UserRoles}.
      * @param index The index used to create the ID used to fetch its linked username label's value.
      * @return The drop down box with the user's current role as the default value and the options available.
      */
-    private Node createRoleComboBox(final String role, final int index)
-    {
+    private Node createRoleComboBox(final String role, final int index) {
         ComboBox<String> box = new ComboBox<>(RoleService.getAllRoles());
         box.setId("gridBox" + index);
         box.getSelectionModel().select(UserRoles.valueOf(role).ordinal());

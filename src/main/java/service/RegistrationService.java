@@ -13,16 +13,16 @@ public class RegistrationService {
     /**
      * Registration Method. It will verify that the given username is unique and that
      *
-     * @param username User's provided username they wish to use.
-     * @param firstname User's chosen first name.
-     * @param lastname User's chosen last name
-     * @param password User's chosen password
+     * @param username             User's provided username they wish to use.
+     * @param firstname            User's chosen first name.
+     * @param lastname             User's chosen last name
+     * @param password             User's chosen password
      * @param passwordVerification Confirmation of the chosen password
      * @return {@link RegistrationStatus} Status returned by this service to signify status of the new account
      */
     public static RegistrationStatus registration(final String username, final String firstname, final String lastname, final String password, final String passwordVerification) {
         try {
-            if(StringUtils.isEmpty(StringUtils.trim(firstname)) || StringUtils.isEmpty(StringUtils.trim(lastname))) {
+            if (StringUtils.isEmpty(StringUtils.trim(firstname)) || StringUtils.isEmpty(StringUtils.trim(lastname))) {
                 return RegistrationStatus.NAME_IS_EMPTY;
             }
             if (!password.equals(passwordVerification)) {
@@ -45,8 +45,8 @@ public class RegistrationService {
     /**
      * If user has chosen to change passwords, this method will allow them to update it
      *
-     * @param username User's username whose password they want to change
-     * @param password User's new chosen password
+     * @param username             User's username whose password they want to change
+     * @param password             User's new chosen password
      * @param passwordVerification Confirmation of the new password
      * @return {@link RegistrationStatus} Status returned by this service to signify status of the password change
      */
@@ -73,7 +73,6 @@ public class RegistrationService {
      * Current session will maintain as long as they do not log out
      *
      * @param username Username related to Profile to delete
-     * @return true if the user has been deleted, false otherwise
      */
     public static void deleteUser(final String username) {
         try {
