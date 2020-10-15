@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
 import java.io.IOException;
 
 /**
@@ -36,9 +35,13 @@ public class JavaFXController extends Application implements EventHandler<Action
 		launch(args);
 	}
 
+	/**
+	 * Overwrites the default handle method to prevent its functionality on the JavaFX controller
+	 *
+	 * @param arg0 Event that calls this method
+	 */
 	@Override
 	public void handle(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-
+		// Do nothing
 	}
 }

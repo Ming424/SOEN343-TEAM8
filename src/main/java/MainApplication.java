@@ -33,8 +33,7 @@ public class MainApplication {
         config.setPort(0);
         if (SystemUtils.IS_OS_WINDOWS) {
             config.setDataDir("/mariaDB/backup");
-        }
-        else {
+        } else {
             config.setDataDir("~/mariaDB/backup");
         }
 

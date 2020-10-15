@@ -34,12 +34,10 @@ public class RegistrationService {
                 DatabaseService.createNewUser(username, password, firstname, lastname);
                 DatabaseService.createNewUserRole(username, UserRoles.STRANGER.toString());
                 return RegistrationStatus.USER_CREATED;
-            }
-            else {
+            } else {
                 return RegistrationStatus.NOT_UNIQUE_USERNAME;
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("No users found for given combination");
         }
         return null;
@@ -62,12 +60,10 @@ public class RegistrationService {
             if (DatabaseService.GetNumberOfUsername(username).size() == 1) {
                 DatabaseService.updateUserPassword(username, password);
                 return RegistrationStatus.PASSWORD_UPDATED;
-            }
-            else {
+            } else {
                 return RegistrationStatus.USERNAME_NOT_FOUND;
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("No users found for given combination");
         }
         return null;

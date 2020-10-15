@@ -36,8 +36,7 @@ public class RoleService {
     public static List<UserRole> getRoles() {
         try {
             return DatabaseService.getAllUserRoles();
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             System.out.println("There are no user roles");
         }
@@ -54,12 +53,10 @@ public class RoleService {
         try {
             if (EnumUtils.isValidEnum(UserRoles.class, role)) {
                 DatabaseService.updateUserRole(username, role);
-            }
-            else {
+            } else {
                 System.out.println("Invalid Enum Used");
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Invalid values used");
         }
     }
