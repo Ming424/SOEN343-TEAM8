@@ -8,7 +8,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import java.io.IOException;
 
-
+/**
+ * Controller that will load the starting screen of the JavaFX application
+ */
 public class JavaFXController extends Application implements EventHandler<ActionEvent> {
 
 	/**
