@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -23,7 +24,10 @@ public class EditSimulationController implements Initializable {
      */
     @FXML
     private ComboBox<String> rooms;
+    @FXML
+    private Label userToMove;
     private Map<String, Room> house;
+    private String username;
     private double xOffset = 0;
     private double yOffset = 0;
 
@@ -78,7 +82,9 @@ public class EditSimulationController implements Initializable {
      * @param resources The set of resources used
      */
     @FXML
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
+        userToMove.setText(LoginInfoController.getUsername());
         house = LoginInfoController.getHouse();
         if (Objects.nonNull(house)) {
             rooms.getItems().addAll(house.keySet());
@@ -88,8 +94,6 @@ public class EditSimulationController implements Initializable {
             rooms.getItems().add("Unknown");
         }
     }
-
-
 
     /**
      * This function loads the change location page(scene) into the window(stage)
