@@ -80,6 +80,8 @@ public class NewUserRoleController {
         });
         if (Objects.nonNull(newUsername) && !existence.get()) {
             DatabaseService.createNewUserRole(parentUser, newUsername, roles.getValue());
+            newUserField.setText("");
+            roles.getSelectionModel().select(UserRoles.STRANGER.ordinal());
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "User has been created");
             alert.showAndWait();
         } else {
