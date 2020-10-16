@@ -29,7 +29,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import org.apache.commons.lang3.StringUtils;
 import service.HouseLayoutService;
 import service.RoleService;
 import java.io.File;
@@ -91,21 +90,30 @@ public class LoginInfoController implements Initializable {
 
     /**
      * Function to set the user's location
+     *
      * @param place the String that is the name of the location that will be passed to this function.
      */
-    public void setLoc(String place) { loc.setText(place); }
+    public void setLoc(String place) {
+        loc.setText(place);
+    }
 
     /**
      * Function to set the user
+     *
      * @param username the username that will be passed to this function.
      */
-    public void setUser(String username) { user.setText(username); }
+    public void setUser(String username) {
+        user.setText(username);
+    }
 
     /**
      * Function to set the date
+     *
      * @param dateTime the time and date that will be passed to this function
      */
-    public void setDate(String dateTime) { date.setText(dateTime); }
+    public void setDate(String dateTime) {
+        date.setText(dateTime);
+    }
 
     /**
      * Function to setting new time label
@@ -113,13 +121,13 @@ public class LoginInfoController implements Initializable {
      * @param dateTime the time and date that will be passed to this function
      */
     public void setTime(String dateTime) {
-    	SimpleDateFormat formatFull = new SimpleDateFormat("yyyy - MMMM - dd HH:mm:ss");
-    	try {
-    		Date d = formatFull.parse(dateTime);
-        	this.timeInMillis = d.getTime();
-    	} catch (ParseException e) {
-			e.printStackTrace();
-		}
+        SimpleDateFormat formatFull = new SimpleDateFormat("yyyy - MMMM - dd HH:mm:ss");
+        try {
+            Date d = formatFull.parse(dateTime);
+            this.timeInMillis = d.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void setUserParent(String userParent) {
@@ -155,19 +163,19 @@ public class LoginInfoController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupCurrentUser();
-        SimpleDateFormat formatDate= new SimpleDateFormat("yyyy - MMMM - dd");
-        SimpleDateFormat formatTime= new SimpleDateFormat("HH:mm:ss");
-	    long sysmillis = System.currentTimeMillis();
-	    this.timeInMillis = sysmillis;
-	    Date d = new Date(sysmillis);
-	    this.date.setText(formatDate.format(d));
-	    this.time.setText(formatTime.format(d));
+        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy - MMMM - dd");
+        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss");
+        long sysmillis = System.currentTimeMillis();
+        this.timeInMillis = sysmillis;
+        Date d = new Date(sysmillis);
+        this.date.setText(formatDate.format(d));
+        this.time.setText(formatTime.format(d));
 
         // Clock animation
         Timeline clock = new Timeline(
-            new KeyFrame(Duration.ZERO, e -> {
-                moveClock();
-            }), new KeyFrame(Duration.seconds(1))
+                new KeyFrame(Duration.ZERO, e -> {
+                    moveClock();
+                }), new KeyFrame(Duration.seconds(1))
         );
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();

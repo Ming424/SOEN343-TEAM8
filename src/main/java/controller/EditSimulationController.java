@@ -87,6 +87,7 @@ public class EditSimulationController implements Initializable {
 
     /**
      * Changes the location of the window(stage) based on the mouse location..
+     *
      * @param event The event that called this function
      */
     public void move(MouseEvent event) {
@@ -98,7 +99,7 @@ public class EditSimulationController implements Initializable {
     /**
      * This function will add the rooms to the combobox
      *
-     * @param location The URL of the resource file
+     * @param location  The URL of the resource file
      * @param resources The set of resources used
      */
     @FXML
@@ -143,8 +144,8 @@ public class EditSimulationController implements Initializable {
     /**
      * Creates a Label with the username
      *
-     * @param value  The value placed in the label
-     * @param id     The value used for the label's ID
+     * @param value The value placed in the label
+     * @param id    The value used for the label's ID
      * @return The label with the value and ID
      */
     private Node createUserLabel(final String value, final String id) {
