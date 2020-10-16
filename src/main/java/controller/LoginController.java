@@ -72,17 +72,11 @@ public class LoginController {
         Scene loginScene = new Scene(login);
 
         LoginInfoController controller = loader.getController();
-
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        String date = dtf.format(now);
-
         Map<String, Object> userInfo = LoginService.login(userD.getText(), passD.getText());
 
         if (Objects.nonNull(userInfo)) {
             controller.setUserParent(userInfo.get("username").toString());
             controller.setUser(userInfo.get("firstname").toString() + " " + userInfo.get("lastname").toString());
-            controller.setDate(date);
 
             // stage info
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();

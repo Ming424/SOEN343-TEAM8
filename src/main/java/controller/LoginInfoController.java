@@ -7,6 +7,8 @@ import entity.Window;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +18,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -33,11 +37,13 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class LoginInfoController implements Initializable {
 
@@ -52,6 +58,8 @@ public class LoginInfoController implements Initializable {
     private Canvas houseRender;
     @FXML
     private Label time;
+    @FXML
+    private Hyperlink loc;
 
     private static String userParent;
 
@@ -62,51 +70,50 @@ public class LoginInfoController implements Initializable {
     private final int DOOR_SIZE = ROOM_SIZE - 55;
     private long timeInMillis;
 
-    public void setUser(String s) {
-        user.setText(s);
-    }
+    /**
+     * Function to set the user's location
+     * @param s
+     */
+    public void setLoc(String s) { loc.setText(s); }
 
-    public void setUserParent(String userParent) {
-        this.userParent = userParent;
-    }
+    /**
+     * Function to set the user
+     * @param s
+     */
+    public void setUser(String s) { user.setText(s); }
 
-    public static String getUserParent() {
-        return userParent;
-    }
-
-    public void setDate(String s) {
-        date.setText(s);
-    }
+    /**
+     * Function to set the date
+     * @param s
+     */
+    public void setDate(String s) { date.setText(s); }
 
     /**
      * Function to setting new time label
      *
-     * @param lt
+     * @param s
      */
-    public void setTime(LocalTime lt) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
-        String strTime = dtf.format(lt);
-        time.setText(strTime);
-
-        // setting variable for durationInMillis
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        try {
-            Date date = sdf.parse(strTime);
-            this.timeInMillis = date.getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public void setTime(String s) {
+    	SimpleDateFormat formatFull = new SimpleDateFormat("yyyy - MMMM - dd HH:mm:ss"); 
+    	try {
+    		Date d = formatFull.parse(s);
+        	this.timeInMillis = d.getTime();
+    	} catch (ParseException e) {
+			e.printStackTrace();
+		  }
     }
 
     /**
-     * Animation controller for clock
+     * Animation controller for the clock
      */
-    private void moveClock() {
-        this.timeInMillis += 1000;
-        long second = (timeInMillis / 1000) % 60;
-        long minute = (timeInMillis / (1000 * 60)) % 60;
-        long hour = (timeInMillis / (1000 * 60 * 60)) % 24 - 5;
-        time.setText(String.format("%02d:%02d:%02d", hour, minute, second));
+    private void moveClock() {       
+    	SimpleDateFormat formatDate= new SimpleDateFormat("yyyy - MMMM - dd");
+    	SimpleDateFormat farmatTime= new SimpleDateFormat("HH:mm:ss");
+    	Calendar cal = Calendar.getInstance();
+    	this.timeInMillis += 1000;
+    	cal.setTimeInMillis(timeInMillis);
+    	date.setText(formatDate.format(cal.getTime()));
+    	time.setText(farmatTime.format(cal.getTime()));
     }
 
     /**
@@ -116,12 +123,15 @@ public class LoginInfoController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        String date = DateTimeFormatter.ofPattern("yyyy - MMMM - dd").format(LocalDateTime.now());
-        this.setDate(date);
-        LocalTime currentTime = LocalTime.now();
-        this.setTime(currentTime);
+        SimpleDateFormat formatDate= new SimpleDateFormat("yyyy - MMMM - dd");
+        SimpleDateFormat farmatTime= new SimpleDateFormat("HH:mm:ss");
+		long sysmillis = System.currentTimeMillis();
+		this.timeInMillis = sysmillis;
+		Date d = new Date(sysmillis);
+		this.date.setText(formatDate.format(d));
+		this.time.setText(farmatTime.format(d));
 
-        // Calling animation on clock
+        // Clock animation
         Timeline clock = new Timeline(
                 new KeyFrame(Duration.ZERO,
                         e -> moveClock()
@@ -130,24 +140,21 @@ public class LoginInfoController implements Initializable {
         );
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
-
     }
 
-    //going to forgot password scene
-
     /**
-     * This function loads the start up page(scene) into the window(stage)
+     * This function loads the login page(scene) into the window(stage)
      *
      * @param event The event that called this function
      * @throws IOException Thrown if the file cannot be read
      */
     public void goToLogin(ActionEvent event) throws IOException {
-        Parent startUp = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
-        Scene startUpScene = new Scene(startUp);
+        Parent login = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
+        Scene loginScene = new Scene(login);
 
         // stage info
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(startUpScene);
+        window.setScene(loginScene);
         window.show();
     }
 
@@ -360,7 +367,22 @@ public class LoginInfoController implements Initializable {
         stage.initStyle(StageStyle.UTILITY);
         stage.setScene(new Scene(root));
         stage.show();
+    }
 
+    /**
+     * This function loads the edit(scene) into the window(stage)
+     *
+     * @param event The event that called this function
+     * @throws IOException Thrown if the file cannot be read
+     */
+    public void goToEdit(ActionEvent event) throws IOException {
+        Parent edit = FXMLLoader.load(getClass().getResource("/view/editSimulation.fxml"));
+        Scene editScene = new Scene(edit);
+
+        // stage info
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(editScene);
+        window.show();
     }
 
 
