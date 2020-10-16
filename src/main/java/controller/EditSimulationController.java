@@ -26,6 +26,9 @@ import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/**
+ * Controller responsible for the editing of user location
+ */
 public class EditSimulationController implements Initializable {
     /**
      * declaring variables
@@ -168,4 +171,7 @@ public class EditSimulationController implements Initializable {
         }
     }
 
+    public static void deleteLocations() {
+        userLocations = null;
+    }
 }

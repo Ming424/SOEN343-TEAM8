@@ -211,6 +211,9 @@ public class LoginInfoController implements Initializable {
         Parent login = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
         Scene loginScene = new Scene(login);
 
+        deleteHouse();
+        EditSimulationController.deleteLocations();
+
         // stage info
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(loginScene);
@@ -465,5 +468,9 @@ public class LoginInfoController implements Initializable {
 
     public static Map<String, Room> getHouse() {
         return house;
+    }
+
+    public static void deleteHouse() {
+        LoginInfoController.house = null;
     }
 }
