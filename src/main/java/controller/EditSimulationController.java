@@ -20,7 +20,6 @@ import org.apache.commons.lang3.StringUtils;
 import service.RoleService;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -44,8 +43,8 @@ public class EditSimulationController implements Initializable {
 
     private static Map<String, String> userLocations;
 
-    public static void setUserLocations(Map<String, String> userLocations) {
-        EditSimulationController.userLocations = userLocations;
+    public static Map<String, String> getUserLocations() {
+        return userLocations;
     }
 
     /**

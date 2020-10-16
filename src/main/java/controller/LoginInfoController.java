@@ -1,16 +1,14 @@
 package controller;
 
-import entity.Door;
 import constants.Position;
+import entity.Door;
 import entity.Room;
-import entity.UserRole;
 import entity.Window;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,23 +32,19 @@ import javafx.util.Duration;
 import org.apache.commons.lang3.StringUtils;
 import service.HouseLayoutService;
 import service.RoleService;
-import javax.management.relation.Role;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class LoginInfoController implements Initializable {
 
@@ -182,6 +176,8 @@ public class LoginInfoController implements Initializable {
             drawRoomFromCache();
         }
         selectedUser.getSelectionModel().select(username);
+        Map userLocs = EditSimulationController.getUserLocations();
+        loc.setText(Objects.isNull(userLocs) ? "Unknown" : userLocs.get(username).toString());
     }
 
     /**
