@@ -1,7 +1,7 @@
 package controller;
 
 import entity.Door;
-import entity.Position;
+import constants.Position;
 import entity.Room;
 import entity.Window;
 import javafx.animation.Animation;
@@ -70,44 +70,35 @@ public class LoginInfoController implements Initializable {
 
     /**
      * Function to set the user's location
-     *
-     * @param s
+     * @param place the String that is the name of the location that will be passed to this function.
      */
-    public void setLoc(String s) {
-        loc.setText(s);
-    }
+    public void setLoc(String place) { loc.setText(place); }
 
     /**
      * Function to set the user
-     *
-     * @param s
+     * @param username the username that will be passed to this function.
      */
-    public void setUser(String s) {
-        user.setText(s);
-    }
+    public void setUser(String username) { user.setText(username); }
 
     /**
      * Function to set the date
-     *
-     * @param s
+     * @param dateTime the time and date that will be passed to this function
      */
-    public void setDate(String s) {
-        date.setText(s);
-    }
+    public void setDate(String dateTime) { date.setText(dateTime); }
 
     /**
      * Function to setting new time label
      *
-     * @param s
+     * @param dateTime the time and date that will be passed to this function
      */
-    public void setTime(String s) {
-        SimpleDateFormat formatFull = new SimpleDateFormat("yyyy - MMMM - dd HH:mm:ss");
-        try {
-            Date d = formatFull.parse(s);
-            this.timeInMillis = d.getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public void setTime(String dateTime) {
+    	SimpleDateFormat formatFull = new SimpleDateFormat("yyyy - MMMM - dd HH:mm:ss");
+    	try {
+    		Date d = formatFull.parse(dateTime);
+        	this.timeInMillis = d.getTime();
+    	} catch (ParseException e) {
+			e.printStackTrace();
+		}
     }
 
     public static void setUserParent(String userParent) {
@@ -138,13 +129,13 @@ public class LoginInfoController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy - MMMM - dd");
-        SimpleDateFormat farmatTime = new SimpleDateFormat("HH:mm:ss");
-        long sysmillis = System.currentTimeMillis();
-        this.timeInMillis = sysmillis;
-        Date d = new Date(sysmillis);
-        this.date.setText(formatDate.format(d));
-        this.time.setText(farmatTime.format(d));
+        SimpleDateFormat formatDate= new SimpleDateFormat("yyyy - MMMM - dd");
+        SimpleDateFormat formatTime= new SimpleDateFormat("HH:mm:ss");
+	long sysmillis = System.currentTimeMillis();
+	this.timeInMillis = sysmillis;
+	Date d = new Date(sysmillis);
+	this.date.setText(formatDate.format(d));
+	this.time.setText(formatTime.format(d));
 
         // Clock animation
         Timeline clock = new Timeline(
@@ -199,7 +190,8 @@ public class LoginInfoController implements Initializable {
     }
 
     /**
-     * This function allows the user to add a house layout text file and parses the JSON data obtained
+     * This function allows the user to add a house layout text file, calls the function to parse the json
+     * and calls the function to draw the house with rooms, doors, windows and lights
      *
      * @param event The event that called this function
      * @throws IOException Thrown if the file cannot be read
@@ -242,9 +234,11 @@ public class LoginInfoController implements Initializable {
     }
 
     /**
+     * This function draws doors on the house layout
+     *
      * @param x  first x coordinate of the door
-     * @param y  second x coordinate of the door
-     * @param x2 first y coordinate of the door
+     * @param y  first y coordinate of the door
+     * @param x2 second x coordinate of the door
      * @param y2 second y coordinate of the door
      */
     public void drawDoor(int x, int y, int x2, int y2) {

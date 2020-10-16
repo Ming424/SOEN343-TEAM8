@@ -29,8 +29,7 @@ public class EditSimulationController implements Initializable {
 
     /**
      * This function loads the login info page(scene) into the window(stage)
-     *
-     * @param event
+     * @param event The event that called this function
      * @throws IOException
      */
     public void goToLoginInfo(ActionEvent event) throws IOException {
@@ -45,8 +44,7 @@ public class EditSimulationController implements Initializable {
 
     /**
      * This function will close the application
-     *
-     * @param event
+     * @param event The event that called this function
      * @throws IOException
      */
     public void close(MouseEvent event) throws IOException {
@@ -56,7 +54,7 @@ public class EditSimulationController implements Initializable {
     /**
      * Gets the location of a mouse.
      *
-     * @param event
+     * @param event The event triggering this function
      */
     public void getLocation(MouseEvent event) {
         xOffset = event.getSceneX();
@@ -65,8 +63,7 @@ public class EditSimulationController implements Initializable {
 
     /**
      * Changes the location of the window(stage) based on the mouse location..
-     *
-     * @param event
+     * @param event The event that called this function
      */
     public void move(MouseEvent event) {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -74,6 +71,12 @@ public class EditSimulationController implements Initializable {
         window.setY(event.getScreenY() - yOffset);
     }
 
+    /**
+     * This function will add the rooms to the combobox
+     *
+     * @param location The URL of the resource file
+     * @param resources The set of resources used
+     */
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         house = LoginInfoController.getHouse();
@@ -86,10 +89,11 @@ public class EditSimulationController implements Initializable {
         }
     }
 
+
+
     /**
      * This function loads the change location page(scene) into the window(stage)
-     *
-     * @param event
+     * @param event The event that called this function
      * @throws IOException
      */
     public void changeLocation(ActionEvent event) throws IOException {
