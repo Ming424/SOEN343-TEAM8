@@ -26,11 +26,16 @@ public class ChangeDateTimeController implements Initializable {
     /**
      * declaring variables
      */
-    @FXML private ComboBox<String> cb_year;
-    @FXML private ComboBox<String> cb_month;
-    @FXML private ComboBox<Integer> cb_date;
-    @FXML private ComboBox<Integer> cb_hour;
-    @FXML private ComboBox<Integer> cb_minute;
+    @FXML
+    private ComboBox<String> cb_year;
+    @FXML
+    private ComboBox<String> cb_month;
+    @FXML
+    private ComboBox<Integer> cb_date;
+    @FXML
+    private ComboBox<Integer> cb_hour;
+    @FXML
+    private ComboBox<Integer> cb_minute;
 
     private LoginInfoController parentController;
     private ObservableList<String> li_year;
@@ -48,7 +53,6 @@ public class ChangeDateTimeController implements Initializable {
 
     /**
      * Function from interface Initializable, initialize default actions
-     *
      */
     public void initialize(URL arg0, ResourceBundle arg1) {
         setDefaultValue();
@@ -133,7 +137,6 @@ public class ChangeDateTimeController implements Initializable {
 
     /**
      * This function assigns the proper years range to List
-     *
      */
     private ObservableList<String> getYearList() {
         int range = 10;        // range of year +- range
@@ -149,7 +152,6 @@ public class ChangeDateTimeController implements Initializable {
 
     /**
      * This function assigns the proper date range to List
-     *
      */
     private ObservableList<Integer> getDateList() {
         int length;

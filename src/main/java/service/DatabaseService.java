@@ -132,7 +132,7 @@ public class DatabaseService {
      * @throws SQLException Thrown if the command has a syntax error
      */
     public static List<String> createNewUserRole(final String userParent, final String username, final String role) throws SQLException {
-        return insert("INSERT INTO roles VALUES (\"" + userParent + "\", \"" + username + "\", \"" + role +"\")", new ColumnListHandler<>());
+        return insert("INSERT INTO roles VALUES (\"" + userParent + "\", \"" + username + "\", \"" + role + "\")", new ColumnListHandler<>());
     }
 
     /**
