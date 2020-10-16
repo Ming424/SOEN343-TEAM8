@@ -1,5 +1,6 @@
 package controller;
 
+import entity.Room;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,12 +8,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class EditSimulationController implements Initializable {
@@ -20,9 +22,8 @@ public class EditSimulationController implements Initializable {
      * declaring variables
      */
     @FXML
-    private ChoiceBox rooms;
-    @FXML
-    private ComboBox<String> test;
+    private ComboBox<String> rooms;
+    private Map<String, Room> house;
     private double xOffset = 0;
     private double yOffset = 0;
 
@@ -73,12 +74,16 @@ public class EditSimulationController implements Initializable {
         window.setY(event.getScreenY() - yOffset);
     }
 
+    @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        test.getItems().add("Living Room");
-        test.getItems().add("Bedroom 1");
-        test.getItems().add("Bedroom 2");
-        test.getItems().add("Bathroom");
-        test.getItems().add("Kitchen");
+        house = LoginInfoController.getHouse();
+        if (Objects.nonNull(house)) {
+            rooms.getItems().addAll(house.keySet());
+            rooms.getItems().add("Outside");
+            rooms.getSelectionModel().select("Outside");
+        } else {
+            rooms.getItems().add("Unknown");
+        }
     }
 
     /**
@@ -94,7 +99,7 @@ public class EditSimulationController implements Initializable {
         Scene loginInfoScene = new Scene(loginInfo);
         LoginInfoController controller = loader.getController();
 
-        String choice = test.getSelectionModel().getSelectedItem();
+        String choice = rooms.getSelectionModel().getSelectedItem();
         controller.setLoc(choice);
 
         // stage info

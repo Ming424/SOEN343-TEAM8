@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -35,6 +36,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -55,6 +58,8 @@ public class LoginInfoController implements Initializable {
     private Hyperlink loc;
 
     private static String userParent;
+    private static Map<String, Room> house;
+    private static Room[] roomArray;
 
     private GraphicsContext gc;
     private double xOffset = 0;
@@ -150,6 +155,10 @@ public class LoginInfoController implements Initializable {
         );
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
+
+        if (Objects.nonNull(house)) {
+            drawRoomFromCache();
+        }
     }
 
     /**
@@ -205,10 +214,10 @@ public class LoginInfoController implements Initializable {
         fileChooser.setTitle("Open Resource File");
         File file = fileChooser.showOpenDialog(window);
 
-        Room[] roomsArray = HouseLayoutService.parseHouseLayout(file);
+        roomArray = HouseLayoutService.parseHouseLayout(file);
 
         HashMap<String, Room> rooms = new HashMap<>();
-        for (Room room : roomsArray) {
+        for (Room room : roomArray) {
             rooms.put(room.getName(), room);
         }
 
@@ -218,7 +227,18 @@ public class LoginInfoController implements Initializable {
         gc.setFont(new Font(10));
 
         int lastX = 90, lastY = 170;
-        drawRoom(rooms, roomsArray[0], traversed, Position.NONE, lastX, lastY);
+        house = rooms;
+        drawRoom(rooms, roomArray[0], traversed, Position.NONE, lastX, lastY);
+    }
+
+    /**
+     * Draws the room based on the cached static variables after this file has been submitted
+     */
+    public void drawRoomFromCache()
+    {
+        gc = houseRender.getGraphicsContext2D();
+        gc.setFont(new Font(10));
+        drawRoom(house, roomArray[0], new HashSet<>(), Position.NONE, 90, 170);
     }
 
     /**
@@ -288,7 +308,7 @@ public class LoginInfoController implements Initializable {
      * @param x           x coordinate of the previously visited room
      * @param y           y coordinate of the previously visited room
      */
-    public void drawRoom(HashMap<String, Room> roomHashMap, Room room, Set<Room> visited, Position previous, int x, int y) {
+    public void drawRoom(Map<String, Room> roomHashMap, Room room, Set<Room> visited, Position previous, int x, int y) {
         visited.add(room);
         switch (previous) {
             case NONE -> {
@@ -386,14 +406,22 @@ public class LoginInfoController implements Initializable {
      * @throws IOException Thrown if the file cannot be read
      */
     public void goToEdit(ActionEvent event) throws IOException {
-        Parent edit = FXMLLoader.load(getClass().getResource("/view/editSimulation.fxml"));
-        Scene editScene = new Scene(edit);
+        if (Objects.nonNull(house)) {
+            Parent edit = FXMLLoader.load(getClass().getResource("/view/editSimulation.fxml"));
+            Scene editScene = new Scene(edit);
 
-        // stage info
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(editScene);
-        window.show();
+            // stage info
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(editScene);
+            window.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Please input the house");
+            alert.showAndWait();
+        }
+
     }
 
-
+    public static Map<String, Room> getHouse() {
+        return house;
+    }
 }
