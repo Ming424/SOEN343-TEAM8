@@ -55,10 +55,8 @@ public class ChangeDateTimeController implements Initializable {
     /**
      * Function from interface Initializable, initialize default actions
      *
-     * @param location, resources
      */
     public void initialize(URL arg0, ResourceBundle arg1) {
-        System.out.println("initialize()");
         setDefaultValue();
         setComboBoxValue();
     }
@@ -106,15 +104,11 @@ public class ChangeDateTimeController implements Initializable {
      * @throws IOException
      */
     public void bt_onChangeClick(ActionEvent event) throws IOException {
-        System.out.println("bt_onChangeClick()");
 
         String date = cb_year.getValue() + " - " + cb_month.getValue() + " - " + cb_date.getValue();
 
         LocalTime currentTime = LocalTime.now();
         String time = String.format("%02d:%02d:%02d", cb_hour.getValue(), cb_minute.getValue(), currentTime.getSecond());
-
-        System.out.println("Changing date to [" + date + "]");
-        System.out.println("Changing time to [" + time + "]");
 
         parentController.setDate(date);
         parentController.setTime(LocalTime.parse(time));
@@ -130,7 +124,6 @@ public class ChangeDateTimeController implements Initializable {
      * @param event
      */
     public void bt_onCancelClick(ActionEvent event) {
-        System.out.println("bt_onCancelClick()");
         Stage stage = (Stage) cb_year.getScene().getWindow();
         stage.close();
     }
@@ -150,7 +143,6 @@ public class ChangeDateTimeController implements Initializable {
     /**
      * This function assigns the proper years range to List
      *
-     * @param event
      */
     private ObservableList<String> getYearList() {
         int range = 10;        // range of year +- range
@@ -167,7 +159,6 @@ public class ChangeDateTimeController implements Initializable {
     /**
      * This function assigns the proper date range to List
      *
-     * @param event
      */
     private ObservableList<Integer> getDateList() {
         int length;

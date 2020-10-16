@@ -75,12 +75,12 @@ public class LoginController {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
-        System.out.println(dtf.format(now));
         String date = dtf.format(now);
 
         Map<String, Object> userInfo = LoginService.login(userD.getText(), passD.getText());
 
         if (Objects.nonNull(userInfo)) {
+            controller.setUserParent(userInfo.get("username").toString());
             controller.setUser(userInfo.get("firstname").toString() + " " + userInfo.get("lastname").toString());
             controller.setDate(date);
 

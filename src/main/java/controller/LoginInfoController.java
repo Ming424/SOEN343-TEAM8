@@ -53,6 +53,8 @@ public class LoginInfoController implements Initializable {
     @FXML
     private Label time;
 
+    private static String userParent;
+
     private GraphicsContext gc;
     private double xOffset = 0;
     private double yOffset = 0;
@@ -62,6 +64,14 @@ public class LoginInfoController implements Initializable {
 
     public void setUser(String s) {
         user.setText(s);
+    }
+
+    public void setUserParent(String userParent) {
+        this.userParent = userParent;
+    }
+
+    public static String getUserParent() {
+        return userParent;
     }
 
     public void setDate(String s) {
@@ -74,10 +84,8 @@ public class LoginInfoController implements Initializable {
      * @param lt
      */
     public void setTime(LocalTime lt) {
-        System.out.println("setTime()");
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
         String strTime = dtf.format(lt);
-        System.out.println(strTime);
         time.setText(strTime);
 
         // setting variable for durationInMillis
@@ -342,8 +350,6 @@ public class LoginInfoController implements Initializable {
      * @throws IOException Thrown if the scene file cannot be read
      */
     public void bt_changeDateTimeOnClick(ActionEvent event) throws IOException {
-        System.out.println("bt_changeDateTimeOnClick()");
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/changeDateTime.fxml"));
         Parent root = loader.load();
 
