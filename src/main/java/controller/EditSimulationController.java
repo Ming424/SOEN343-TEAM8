@@ -1,6 +1,7 @@
 package controller;
 
 import entity.Room;
+import entity.UserRole;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,12 +12,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import service.RoleService;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class EditSimulationController implements Initializable {
     /**
@@ -26,15 +33,24 @@ public class EditSimulationController implements Initializable {
     private ComboBox<String> rooms;
     @FXML
     private Label userToMove;
+    @FXML
+    private AnchorPane locationDisplay;
     private Map<String, Room> house;
     private String username;
     private double xOffset = 0;
     private double yOffset = 0;
 
+    private static Map<String, String> userLocations;
+
+    public static void setUserLocations(Map<String, String> userLocations) {
+        EditSimulationController.userLocations = userLocations;
+    }
+
     /**
      * This function loads the login info page(scene) into the window(stage)
+     *
      * @param event The event that called this function
-     * @throws IOException
+     * @throws IOException Thrown if the view file cannot be read
      */
     public void goToLoginInfo(ActionEvent event) throws IOException {
         Parent loginInfo = FXMLLoader.load(getClass().getResource("/view/loginInfo.fxml"));
@@ -48,10 +64,10 @@ public class EditSimulationController implements Initializable {
 
     /**
      * This function will close the application
+     *
      * @param event The event that called this function
-     * @throws IOException
      */
-    public void close(MouseEvent event) throws IOException {
+    public void close(MouseEvent event) {
         System.exit(0);
     }
 
@@ -84,7 +100,8 @@ public class EditSimulationController implements Initializable {
     @FXML
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        userToMove.setText(LoginInfoController.getUsername());
+        username = LoginInfoController.getUsername();
+        userToMove.setText("Move " + LoginInfoController.getUsername() + " To:");
         house = LoginInfoController.getHouse();
         if (Objects.nonNull(house)) {
             rooms.getItems().addAll(house.keySet());
@@ -93,27 +110,56 @@ public class EditSimulationController implements Initializable {
         } else {
             rooms.getItems().add("Unknown");
         }
+        locationDisplay.getChildren().add(processRows());
     }
 
     /**
-     * This function loads the change location page(scene) into the window(stage)
-     * @param event The event that called this function
-     * @throws IOException
+     * Method that will create the grid placed in the {@link AnchorPane}.
+     * Also calls the {@link RoleService} to obtain the Users and Roles.
+     *
+     * @return The grid pane used by the display
      */
-    public void changeLocation(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/view/loginInfo.fxml"));
-        Parent loginInfo = loader.load();
-        Scene loginInfoScene = new Scene(loginInfo);
-        LoginInfoController controller = loader.getController();
+    private GridPane processRows() {
+        AtomicInteger index = new AtomicInteger();
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        if (Objects.isNull(userLocations)) {
+            userLocations = RoleService.getRoles(LoginInfoController.getUserParent()).stream().collect(Collectors.toMap(
+                    UserRole::getUsername,
+                    userRole -> "Unknown"
+            ));
+        }
+        userLocations.forEach((key, value) -> {
+            gridPane.addRow(gridPane.getRowCount(), createUserLabel(key, key), createUserLabel("Location:", ""), createUserLabel(value, key + "Location"));
+            index.getAndIncrement();
+        });
+        return gridPane;
+    }
 
-        String choice = rooms.getSelectionModel().getSelectedItem();
-        controller.setLoc(choice);
+    /**
+     * Creates a Label with the username
+     *
+     * @param value  The value placed in the label
+     * @param id     The value used for the label's ID
+     * @return The label with the value and ID
+     */
+    private Node createUserLabel(final String value, final String id) {
+        Label userLabel = new Label();
+        userLabel.setMinWidth(100);
+        userLabel.setId(id);
+        userLabel.setText(value);
+        return userLabel;
+    }
 
-        // stage info
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(loginInfoScene);
-        window.show();
+    /**
+     * Function responsible for updating the user's location
+     *
+     * @param event The event that called this function
+     */
+    public void changeLocation(ActionEvent event) {
+        String chosenLocation = rooms.getSelectionModel().getSelectedItem();
+        userLocations.put(username, chosenLocation);
+        ((Label) locationDisplay.lookup("#" + username + "Location")).setText(chosenLocation);
     }
 
 }

@@ -84,6 +84,11 @@ public class LoginInfoController implements Initializable {
     private final int DOOR_SIZE = ROOM_SIZE - 55;
     private long timeInMillis;
 
+    /**
+     * Sets up the logged in user as the active user
+     *
+     * @param userParent The active user's username
+     */
     public void setSelectedUser(String userParent) {
         selectedUser.getSelectionModel().select(userParent);
         username = userParent;
@@ -179,6 +184,9 @@ public class LoginInfoController implements Initializable {
         selectedUser.getSelectionModel().select(username);
     }
 
+    /**
+     * Sets up the current active user and all possible options
+     */
     private void setupCurrentUser() {
         Map<String, String> listOfUsers = RoleService.findRole(userParent);
         userRole.setText(listOfUsers.get(username));
