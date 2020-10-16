@@ -9,12 +9,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.StringUtils;
 import service.RoleService;
 import java.io.IOException;
 import java.net.URL;
@@ -158,8 +160,13 @@ public class EditSimulationController implements Initializable {
      */
     public void changeLocation(ActionEvent event) {
         String chosenLocation = rooms.getSelectionModel().getSelectedItem();
-        userLocations.put(username, chosenLocation);
-        ((Label) locationDisplay.lookup("#" + username + "Location")).setText(chosenLocation);
+        if (StringUtils.isNotEmpty(chosenLocation)) {
+            userLocations.put(username, chosenLocation);
+            ((Label) locationDisplay.lookup("#" + username + "Location")).setText(chosenLocation);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Location is empty");
+            alert.showAndWait();
+        }
     }
 
 }
