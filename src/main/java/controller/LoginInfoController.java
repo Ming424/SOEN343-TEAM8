@@ -194,6 +194,8 @@ public class LoginInfoController implements Initializable {
                     username = newValue;
                     selectedUser.getSelectionModel().select(newValue);
                     userRole.setText(listOfUsers.get(newValue));
+                    Map userLocs = EditSimulationController.getUserLocations();
+                    loc.setText(Objects.isNull(userLocs) ? "Unknown" : userLocs.get(username).toString());
                 }
             }
         });
