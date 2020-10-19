@@ -58,8 +58,8 @@ public class EditSimulationControllerTest extends ApplicationTest {
         DatabaseService.createNewUserRole("testUser0", "testUser2", UserRoles.STRANGER.toString());
         DatabaseService.createNewUserRole("testUser0", "testUser3", UserRoles.STRANGER.toString());
 
-        MockedStatic<EditSimulationController> mock = Mockito.mockStatic(EditSimulationController.class);
-        mock.when(EditSimulationController::getUserLocations).thenReturn(null);
+        MockedStatic<LoginInfoController> mock = Mockito.mockStatic(LoginInfoController.class);
+        mock.when(LoginInfoController::getUserParent).thenReturn("testUser0");
         Room[] roomArray = HouseLayoutService.parseHouseLayout(FileUtils.getFile("src", "test", "resources", "houseLayout.txt"));
 
         rooms = new HashMap<>();

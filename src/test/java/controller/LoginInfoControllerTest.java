@@ -5,8 +5,6 @@ import ch.vorburger.mariadb4j.DB;
 import ch.vorburger.mariadb4j.DBConfigurationBuilder;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -48,8 +46,8 @@ public class LoginInfoControllerTest extends ApplicationTest {
         Flyway flyway = Flyway.configure().dataSource(databaseUrl, "root", "").load();
         flyway.migrate();
 
-        MockedStatic<LoginInfoController> mock = Mockito.mockStatic(LoginInfoController.class);
-        mock.when(LoginInfoController::getUserParent).thenReturn("testUser0");
+        MockedStatic<EditSimulationController> mock = Mockito.mockStatic(EditSimulationController.class);
+        mock.when(EditSimulationController::getUserLocations).thenReturn(null);
     }
 
     @BeforeEach
