@@ -98,7 +98,7 @@ public class Room {
     }
 
     /**
-     * Builder class for Room which can have many different version of itself
+     * Builder pattern for Room Object
      */
     public static class Builder {
         private String name;
