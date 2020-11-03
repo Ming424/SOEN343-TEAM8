@@ -1,9 +1,7 @@
 package controller;
 
-import constants.UserRoles;
 import entity.CommandType;
 import entity.PermissionType;
-import entity.UserRole;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -21,7 +19,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.apache.commons.collections4.SetUtils;
 import org.apache.commons.lang3.EnumUtils;
-import service.RoleService;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,6 +28,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Controller responsible for the view for User Permissions
+ */
 public class UserPermissionsController {
 
     /**
@@ -40,7 +40,6 @@ public class UserPermissionsController {
     public AnchorPane values;
     @FXML
     private Label title;
-
 
     private static String username;
     private String menuUsername;
@@ -69,6 +68,9 @@ public class UserPermissionsController {
         this.title.setText(title);
     }
 
+    /**
+     * On initialization, add the grid of information into values
+     */
     @FXML
     public void initialize() {
         if (Objects.isNull(userPermissions)) {
