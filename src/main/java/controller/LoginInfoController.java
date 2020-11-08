@@ -2427,9 +2427,12 @@ public class LoginInfoController implements Initializable, MainController {
         timeBeforeAlert = timeBeforeAlertInput.getText();
     }
 
+
     /**
-     * This method sends a notification to the user when the time has passed
+     * This function sends a notification to the user after the time delay has passed
+     * after a user has been detected in the house while in away mode
      *
+     * @param timeDelay the timeDelay to wait
      */
     public void sendNotification(String timeDelay){
         Timeline timeline = new Timeline(
