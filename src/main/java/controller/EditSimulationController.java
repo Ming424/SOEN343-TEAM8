@@ -633,4 +633,11 @@ public class EditSimulationController implements Initializable, SubController {
             return 31;
         }
     }
+
+    /**
+     * Setter for summerMonthEnd
+     */
+    public static void setSummerMonthEndCache(final int summerMonthEndCache) {
+        EditSimulationController.summerMonthEndCache = summerMonthEndCache;
+    }
 }
