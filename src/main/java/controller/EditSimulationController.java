@@ -1,5 +1,6 @@
 package controller;
 
+import constants.Season;
 import entity.ConsoleComponents;
 import entity.Room;
 import entity.UserRole;
@@ -27,9 +28,14 @@ import observerPattern.Subject;
 import observerPattern.UserLocationObserver;
 import org.apache.commons.lang3.StringUtils;
 import service.RoleService;
+import javax.swing.event.ChangeEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.Month;
+import java.util.Calendar;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -104,10 +110,10 @@ public class EditSimulationController implements Initializable, SubController {
 
     static {
         summerMonthStartCache = 6;
-        winterMonthStartCache = 0;
+        winterMonthStartCache = 1;
         summerDayStartCache = 1;
         winterDayStartCache = 1;
-        summerMonthEndCache = 11;
+        summerMonthEndCache = 12;
         winterMonthEndCache = 5;
         summerDayEndCache = 31;
         winterDayEndCache = 31;
@@ -391,14 +397,17 @@ public class EditSimulationController implements Initializable, SubController {
         winterMonthEnd.setItems(li_month);
         summerMonthEnd.setItems(li_month);
 
-        winterMonthStart.getSelectionModel().select(winterMonthStartCache);
-        summerMonthStart.getSelectionModel().select(summerMonthStartCache);
-        winterMonthEnd.getSelectionModel().select(winterMonthEndCache);
-        summerMonthEnd.getSelectionModel().select(summerMonthEndCache);
+        winterMonthStart.getSelectionModel().select(winterMonthStartCache - 1);
+        summerMonthStart.getSelectionModel().select(summerMonthStartCache - 1);
+        winterMonthEnd.getSelectionModel().select(winterMonthEndCache - 1);
+        summerMonthEnd.getSelectionModel().select(summerMonthEndCache - 1);
 
         updateMonthDays();
     }
 
+    /**
+     * Adds and updates the combo boxes for the months and days
+     */
     private void updateMonthDays() {
         ObservableList<Integer> listOfDaySummerStart = getDateList(summerMonthStart);
         ObservableList<Integer> listOfDayWinterStart = getDateList(winterMonthStart);
@@ -416,36 +425,65 @@ public class EditSimulationController implements Initializable, SubController {
         summerDayEnd.getSelectionModel().select(summerDayEndCache);
     }
 
+    /**
+     * On change for the combobox controlling the month for the start of summer
+     */
     public void onChangeSummerStartMonth() {
         int month = Month.valueOf(summerMonthStart.getSelectionModel().getSelectedItem().toUpperCase()).getValue();
         if (month > winterMonthEndCache) {
+            int maxDay = getMaxDay(month);
             summerMonthStartCache = month;
-        } else if (!(summerDayStartCache > winterDayEndCache)) {
+            if (summerDayStartCache > maxDay) {
+                summerDayStart.setItems(getDateList(summerMonthStart));
+                summerDayStart.getSelectionModel().select(maxDay);
+            }
+        } else if (((!(summerDayStartCache > winterDayEndCache)) && (month == winterMonthEndCache)) || month < winterMonthEndCache) {
             String message = "Summer can only start after the end of winter";
             Alert alert = new Alert(Alert.AlertType.WARNING, message);
             alert.showAndWait();
             LoginInfoController.consoleLogFile(message, ConsoleComponents.SHH);
             summerMonthStart.getSelectionModel().select(summerMonthStartCache);
         } else {
+            int maxDay = getMaxDay(month);
             summerMonthStartCache = month;
+            if (summerDayStartCache > maxDay) {
+                summerDayStart.setItems(getDateList(summerMonthStart));
+                summerDayStart.getSelectionModel().select(maxDay);
+            }
         }
     }
 
+    /**
+     * On change for the combobox controlling the month for the end of summer
+     */
     public void onChangeSummerEndMonth() {
         int month = Month.valueOf(summerMonthEnd.getSelectionModel().getSelectedItem().toUpperCase()).getValue();
         if (month < winterMonthStartCache) {
+            int maxDay = getMaxDay(month);
             summerMonthEndCache = month;
-        } else if (!(summerDayEndCache < winterDayEndCache)) {
+            if (summerDayEndCache > maxDay) {
+                summerDayEnd.setItems(getDateList(summerMonthEnd));
+                summerDayEnd.getSelectionModel().select(maxDay);
+            }
+        } else if (((!(summerDayEndCache < winterDayEndCache)) && (month == winterMonthStartCache)) || month > winterMonthStartCache || month < summerMonthStartCache) {
             String message = "Summer can only end before the start of winter";
             Alert alert = new Alert(Alert.AlertType.WARNING, message);
             alert.showAndWait();
             LoginInfoController.consoleLogFile(message, ConsoleComponents.SHH);
             summerMonthEnd.getSelectionModel().select(summerMonthEndCache);
         } else {
+            int maxDay = getMaxDay(month);
             summerMonthEndCache = month;
+            if (summerDayEndCache > maxDay) {
+                summerDayEnd.setItems(getDateList(summerMonthEnd));
+                summerDayEnd.getSelectionModel().select(maxDay);
+            }
         }
     }
 
+    /**
+     * On change for the combobox controlling the day for the start of summer
+     */
     public void onChangeSummerStartDay() {
         int day = summerDayStart.getSelectionModel().getSelectedItem();
         if (summerMonthStartCache.equals(winterMonthStartCache) && !(day > winterDayEndCache)) {
@@ -459,6 +497,9 @@ public class EditSimulationController implements Initializable, SubController {
         }
     }
 
+    /**
+     * On change for the combobox controlling the day for the end of summer
+     */
     public void onChangeSummerEndDay() {
         int day = summerDayEnd.getSelectionModel().getSelectedItem();
         if (summerMonthStartCache.equals(winterMonthStartCache) && !(day < winterDayStartCache)) {
@@ -472,36 +513,65 @@ public class EditSimulationController implements Initializable, SubController {
         }
     }
 
+    /**
+     * On change for the combobox controlling the month for the start of winter
+     */
     public void onChangeWinterStartMonth() {
         int month = Month.valueOf(winterMonthStart.getSelectionModel().getSelectedItem().toUpperCase()).getValue();
         if (month > summerMonthEndCache) {
+            int maxDay = getMaxDay(month);
             winterMonthStartCache = month;
-        } else if (!(winterDayEndCache > summerDayEndCache)) {
+            if (winterDayStartCache > maxDay) {
+                winterDayStart.setItems(getDateList(winterMonthStart));
+                winterDayStart.getSelectionModel().select(maxDay);
+            }
+        } else if (((!(winterDayEndCache > summerDayEndCache)) && (month == summerMonthEndCache)) || month < summerMonthEndCache) {
             String message = "Winter can only start after the end of Summer";
             Alert alert = new Alert(Alert.AlertType.WARNING, message);
             alert.showAndWait();
             LoginInfoController.consoleLogFile(message, ConsoleComponents.SHH);
             winterMonthStart.getSelectionModel().select(winterMonthStartCache);
         } else {
+            int maxDay = getMaxDay(month);
             winterMonthStartCache = month;
+            if (winterDayStartCache > maxDay) {
+                winterDayStart.setItems(getDateList(winterMonthStart));
+                winterDayStart.getSelectionModel().select(maxDay);
+            }
         }
     }
 
+    /**
+     * On change for the combobox controlling the month for the end of winter
+     */
     public void onChangeWinterEndMonth() {
         int month = Month.valueOf(winterMonthEnd.getSelectionModel().getSelectedItem().toUpperCase()).getValue();
         if (month < summerMonthStartCache) {
+            int maxDay = getMaxDay(month);
             winterMonthEndCache = month;
-        } else if (!(summerDayEndCache < winterDayEndCache)) {
+            if (winterDayEndCache > maxDay) {
+                winterDayEnd.setItems(getDateList(winterMonthEnd));
+                winterDayEnd.getSelectionModel().select(maxDay);
+            }
+        } else if (((!(summerDayEndCache < winterDayEndCache)) && (month == summerMonthStartCache)) || month > summerMonthStartCache || month < winterMonthStartCache) {
             String message = "Winter can only end after the start of Summer";
             Alert alert = new Alert(Alert.AlertType.WARNING, message);
             alert.showAndWait();
             LoginInfoController.consoleLogFile(message, ConsoleComponents.SHH);
             winterMonthEnd.getSelectionModel().select(winterMonthEndCache);
         } else {
+            int maxDay = getMaxDay(month);
             winterMonthEndCache = month;
+            if (winterDayEndCache > maxDay) {
+                winterDayEnd.setItems(getDateList(winterMonthEnd));
+                winterDayEnd.getSelectionModel().select(maxDay);
+            }
         }
     }
 
+    /**
+     * On change for the combobox controlling the day for the start of winter
+     */
     public void onChangeWinterStartDay() {
         int day = winterDayStart.getSelectionModel().getSelectedItem();
         if (summerMonthStartCache.equals(winterMonthStartCache) && !(day > summerDayEndCache)) {
@@ -515,6 +585,9 @@ public class EditSimulationController implements Initializable, SubController {
         }
     }
 
+    /**
+     * On change for the combobox controlling the day for the end of winter
+     */
     public void onChangeWinterEndDay() {
         int day = winterDayEnd.getSelectionModel().getSelectedItem();
         if (summerMonthStartCache.equals(winterMonthStartCache) && !(day < summerDayStartCache)) {
@@ -525,6 +598,39 @@ public class EditSimulationController implements Initializable, SubController {
             winterDayEnd.getSelectionModel().select(winterDayEndCache);
         } else {
             winterDayEndCache = day;
+        }
+    }
+
+    /**
+     * function responsible for returning the correct season
+     */
+    public static Season getCurrentSeason(Calendar calendar) {
+        LocalDate summerStart = LocalDate.of(LocalDate.now().getYear(), Month.of(summerMonthStartCache), summerDayStartCache);
+        LocalDate summerEnd = LocalDate.of(LocalDate.now().getYear(), Month.of(summerMonthEndCache), summerDayEndCache);
+        LocalDate winterStart = LocalDate.of(LocalDate.now().getYear(), Month.of(winterMonthStartCache), winterDayStartCache);
+        LocalDate winterEnd = LocalDate.of(LocalDate.now().getYear(), Month.of(winterMonthEndCache), winterMonthEndCache);
+
+        LocalDate localCalendar = LocalDate.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId());
+
+        if (localCalendar.isAfter(summerStart) && localCalendar.isBefore(summerEnd)) {
+            return Season.SUMMER;
+        } else if (localCalendar.isAfter(winterStart) && localCalendar.isBefore(winterEnd)) {
+            return Season.WINTER;
+        } else {
+            return Season.OTHER;
+        }
+    }
+
+    /**
+     * Get maximal day of a month
+     */
+    private int getMaxDay(int month) {
+        if (month == 4 || month == 6 || month == 9 || month == 11) {
+            return 30;
+        } else if (month == 2) {
+            return 29;
+        } else {
+            return 31;
         }
     }
 }
