@@ -7,6 +7,7 @@ Key point of the project:
 - Full Java project
 - JavaFX (animation, UI)
 - Design Pattern
+- Gradle
 
 # SOEN 343  TEAM 8
 
