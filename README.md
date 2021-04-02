@@ -1,3 +1,10 @@
+A Java project for class SOEN 343 (Soft Arch and Design)
+Key point of the project:
+
+- Full Java project
+- JavaFX (animation, UI)
+- Design Pattern
+
 # SOEN 343  TEAM 8
 
 Clone the repository under your work space.
