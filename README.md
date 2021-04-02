@@ -1,5 +1,7 @@
 A Java project for class SOEN 343 (Soft Arch and Design)
 
+Smart Home Simulatation for a house, automation on ventilation, security and heating
+
 Key point of the project:
 
 - Full Java project
