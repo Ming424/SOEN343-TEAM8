@@ -1,4 +1,5 @@
 A Java project for class SOEN 343 (Soft Arch and Design)
+
 Key point of the project:
 
 - Full Java project
